@@ -17,5 +17,38 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Iosevka Nerd Font", Arial, Helvetica, sans-serif;
+}
+
+pre {
+  padding: 10px;
+  border: 2px solid;
+  white-space: pre-wrap;
+}
+
+.post-content pre,
+.post-content code {
+  font-family: "JetBrains Mono Nerd Font", monospace;
+}
+
+h1 {
+  font-size: 1.2rem;
+}
+
+.post-content p {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.post-content h1 {
+  border-bottom: 1px solid;
+}
+
+.post-content li {
+  padding-left: 1rem;
+}
+
+.section {
+  border-bottom: 2px solid;
+  padding: 10px 5px;
 }

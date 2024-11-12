@@ -1,0 +1,21 @@
+import "./globals.css"; // Import global styles
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title className="text-xl">My Blog</title>
+      </head>
+      <body className="flex flex-col min-h-screen">
+        <header>
+          <h1>My Blog</h1>
+        </header>
+        <main className="flex-grow">{children}</main>
+        <footer className="w-full max-w-screen-xl p-4">
+          <p>© {new Date().getFullYear()} My Blog. All rights reserved.</p>
+        </footer>
+      </body>
+    </html>
+  );
+}
