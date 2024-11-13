@@ -18,7 +18,8 @@ async function fetchPost(slug) {
 }
 
 export default async function Post({ params }) {
-  const post = await fetchPost(params.slug);
+  const { slug } = await params;
+  const post = await fetchPost(slug);
 
   if (!post) {
     notFound();
@@ -31,8 +32,8 @@ export default async function Post({ params }) {
       <h1 className="md:underline">{post.title}</h1>
       <p className="post-meta">
         {post.date} | {post.author}
-        {post.formattedTags}
       </p>
+      <p>{post.formattedTags}</p>
       <div
         className="post-content py-5 prose"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
