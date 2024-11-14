@@ -36,10 +36,13 @@ export default function HomePage() {
                 {year}
               </a>
             </h2>
-            <ul>
+            <ul className="">
               {postsByYear[year].map((post) => (
-                <li key={post.slug} className="py-3">
-                  <a href={`/posts/${post.slug}`} className="underline">
+                <li key={post.slug} className="m-2 p-3 bg-neutral-600/20">
+                  <a
+                    href={`/posts/${post.slug}`}
+                    className="text-xl hover:underline"
+                  >
                     {post.title}
                   </a>
                   <p className="text-sm border-b-2">

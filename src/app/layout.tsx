@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
       <body className="flex flex-col min-h-screen p-2 sm:p-5 max-w-4xl mx-auto">
         <header className="mx-2 sm:mx-5 flex justify-between items-center border-b-2 py-2">
           <a href="../" className="hover:underline">
-            <div className="text-lg font-bold">Moskas&apos; Blog</div>
+            <div className="text-3xl font-bold">Moskas&apos; Blog</div>
           </a>
           <div className="space-x-2 sm:space-x-4">
             <a href="../" className="hover:underline">
