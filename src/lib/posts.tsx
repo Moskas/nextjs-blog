@@ -59,3 +59,28 @@ export function generateRSSFeed() {
   // Return the RSS XML as a string
   return feed.xml({ indent: true });
 }
+
+export function listTags(post: Post) {
+  // Check if post.tags is an array and return appropriate JSX
+  if (Array.isArray(post.tags) && post.tags.length > 0) {
+    return (
+      <>
+        {post.tags.map((tag) => (
+          <a
+            className="text-cyan-700 dark:text-cyan-300 italic hover:underline"
+            href={`/tags/${tag}`}
+            key={tag}
+          >
+            #{tag}{" "}
+          </a>
+        ))}
+      </>
+    );
+  } else {
+    return (
+      <span className="text-gray-600 dark:text-gray-300">
+        No tags available
+      </span>
+    ); // More informative message
+  }
+}

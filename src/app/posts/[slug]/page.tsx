@@ -1,5 +1,5 @@
 import MarkdownIt from "markdown-it";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, listTags } from "@/lib/posts";
 import { notFound } from "next/navigation";
 
 const md = new MarkdownIt();
@@ -33,15 +33,7 @@ export default async function Post({ params }) {
       <p className="post-meta">
         {post.date} | {post.author}
       </p>
-      {Array.isArray(post.tags) ? (
-        post.tags.map((tag) => (
-          <a className="text-cyan-300" href={`/tags/${tag}`} key={tag}>
-            #{tag}{" "}
-          </a>
-        ))
-      ) : (
-        <span></span>
-      )}
+      {listTags(post)}
       <div
         className="post-content py-5 prose"
         dangerouslySetInnerHTML={{ __html: htmlContent }}

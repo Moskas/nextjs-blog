@@ -13,6 +13,10 @@ export default {
         foreground: "var(--foreground)",
       },
     },
+    borderColor: ({ theme }) => ({
+      ...theme("colors"),
+      DEFAULT: theme("currentColor"),
+    }),
   },
   plugins: [],
 } satisfies Config;

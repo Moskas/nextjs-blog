@@ -1,4 +1,4 @@
-import { getPostsByTag, getAllPosts } from "@/lib/posts";
+import { getPostsByTag, getAllPosts, listTags } from "@/lib/posts";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -16,7 +16,10 @@ export default async function HomePage({ params }) {
     return (
       <div className="p-5">
         <h1>
-          Blog posts tagged: <span className="text-cyan-300">#{tags}</span>
+          Blog posts tagged:{" "}
+          <span className="text-cyan-700 dark:text-cyan-300 hover:underline">
+            #{tags}
+          </span>
         </h1>
         <ul>
           {posts.map((post) => (
@@ -25,20 +28,7 @@ export default async function HomePage({ params }) {
                 {post.title}
               </a>
               <p className="text-sm text-align-right border-b-2">
-                {post.date} |{" "}
-                {Array.isArray(post.tags) ? (
-                  post.tags.map((tag) => (
-                    <a
-                      className="text-cyan-300"
-                      href={`/tags/${tag}`}
-                      key={tag}
-                    >
-                      #{tag}{" "}
-                    </a>
-                  ))
-                ) : (
-                  <span></span>
-                )}
+                {post.date} | {listTags(post)}
               </p>
               <p>{post.summary}</p>
             </li>

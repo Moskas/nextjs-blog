@@ -1,4 +1,12 @@
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, listTags } from "@/lib/posts";
+
+export function summary(post: Post) {
+  if (post.summary) {
+    return <p>{post.summary}</p>;
+  } else {
+    return <p>No summary available</p>;
+  }
+}
 
 export default function Home() {
   const posts = getAllPosts();
@@ -18,22 +26,16 @@ export default function Home() {
       <ul>
         {posts.slice(0, 5).map((post) => (
           <li key={post.slug} className="py-3">
-            <a href={`/posts/${post.slug}`} className="underline">
+            <a
+              href={`/posts/${post.slug}`}
+              className="underline hover:text-green-500 dark:hover:text-green-300"
+            >
               {post.title}
             </a>
             <p className="text-sm text-align-right border-b-2">
-              {post.date} |{" "}
-              {Array.isArray(post.tags) ? (
-                post.tags.map((tag) => (
-                  <a className="text-cyan-300" href={`/tags/${tag}`} key={tag}>
-                    #{tag}{" "}
-                  </a>
-                ))
-              ) : (
-                <span></span>
-              )}
+              {post.date} | {listTags(post)}
             </p>
-            <p>{post.summary}</p>
+            {summary(post)}
           </li>
         ))}
       </ul>
