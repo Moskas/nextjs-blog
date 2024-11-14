@@ -24,6 +24,16 @@ export function getAllPosts() {
   return allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
+export function getPostsByTag(tag) {
+  const allPosts = getAllPosts();
+
+  const filteredPosts = allPosts.filter(
+    (post) => post.tags && post.tags.includes(tag),
+  );
+
+  return filteredPosts;
+}
+
 export function generateRSSFeed() {
   const posts = getAllPosts();
 
