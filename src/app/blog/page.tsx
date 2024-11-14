@@ -13,7 +13,16 @@ export default function HomePage() {
               {post.title}
             </a>
             <p className="text-sm text-align-right border-b-2">
-              {post.date} | {post.formattedTags}
+              {post.date} |{" "}
+              {Array.isArray(post.tags) ? (
+                post.tags.map((tag) => (
+                  <a className="text-cyan-300" href={`/tags/${tag}`} key={tag}>
+                    #{tag}{" "}
+                  </a>
+                ))
+              ) : (
+                <span></span>
+              )}
             </p>
             <p>{post.summary}</p>
           </li>

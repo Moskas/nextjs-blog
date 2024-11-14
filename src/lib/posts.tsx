@@ -14,13 +14,8 @@ export function getAllPosts() {
     const fileContents = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(fileContents);
 
-    const formattedTags = Array.isArray(data.tags)
-      ? data.tags.map((tag) => ` #${tag}`).join(" ")
-      : "";
-
     return {
       slug,
-      formattedTags,
       ...data,
       content,
     };
@@ -45,7 +40,7 @@ export function generateRSSFeed() {
     feed.item({
       title: post.title,
       description: post.content,
-      url: `http://yourwebsite.com/posts/${post.slug}`, // link to the post
+      url: `http://localhost:3000/posts/${post.slug}`, // link to the post
       guid: post.slug, // unique identifier for the post
       date: post.date, // publication date
     });

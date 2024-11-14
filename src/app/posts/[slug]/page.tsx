@@ -33,7 +33,15 @@ export default async function Post({ params }) {
       <p className="post-meta">
         {post.date} | {post.author}
       </p>
-      <p>{post.formattedTags}</p>
+      {Array.isArray(post.tags) ? (
+        post.tags.map((tag) => (
+          <a className="text-cyan-300" href={`/tags/${tag}`} key={tag}>
+            #{tag}{" "}
+          </a>
+        ))
+      ) : (
+        <span></span>
+      )}
       <div
         className="post-content py-5 prose"
         dangerouslySetInnerHTML={{ __html: htmlContent }}

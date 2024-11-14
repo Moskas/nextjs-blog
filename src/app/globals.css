@@ -23,7 +23,7 @@ body {
 pre {
   padding: 10px;
   border: 2px solid;
-  white-space: pre-wrap;
+  overflow-x: auto;
 }
 
 .post-content pre,
