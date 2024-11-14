@@ -52,3 +52,16 @@ h1 {
   border-bottom: 2px solid;
   padding: 10px 5px;
 }
+
+.prose {
+  pre {
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 1.3rem;
+  }
+  h2 {
+    font-size: 1.1rem;
+    border-bottom: 2px solid;
+  }
+}

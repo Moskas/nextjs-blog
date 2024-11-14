@@ -1,8 +1,21 @@
 import MarkdownIt from "markdown-it";
 import { getAllPosts, listTags } from "@/lib/posts";
 import { notFound } from "next/navigation";
+import hljs from "highlight.js";
+import "highlight.js/styles/dark.css"; // Import your chosen theme
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+  highlight: (str, lang) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(str, { language: lang }).value;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    return ""; // return empty string if no language is specified
+  },
+});
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -33,7 +46,7 @@ export default async function Post({ params }) {
       <p className="post-meta">
         {post.date} | {post.author}
       </p>
-      {listTags(post)}
+      Tags: {listTags(post)}
       <div
         className="post-content py-5 prose"
         dangerouslySetInnerHTML={{ __html: htmlContent }}

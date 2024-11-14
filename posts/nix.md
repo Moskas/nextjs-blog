@@ -17,45 +17,46 @@ At the moment I&rsquo;ve got 2 desktops, a laptop and a WSL hosts configured in 
 
 It&rsquo;s an *&ldquo;experimental&rdquo;* feature that&rsquo;s basically a defacto standard by now if you browse user configs and software made for nix. In a very simple terms it&rsquo;s a way to define **inputs** and **outputs** of a configuration/package/shell. *(I&rsquo;ve ommited some possible outputs to keep it simple)*  
 A simplest flake is that is part of nix cli interface can be created using the following command:  
-
-    ~   nix flake init
-
+```
+~   nix flake init
+```
 The command is similar in syntax to git command.  
 And here is the result:  
+```nix
+{
+  description = "A very basic flake";
 
-    {
-      description = "A very basic flake";
-    
-      inputs = {
-        nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-      };
-    
-      outputs = { self, nixpkgs }: {
-    
-        packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-    
-        packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
-    
-      };
-    }
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  };
 
+  outputs = { self, nixpkgs }: {
+
+    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+
+    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
+
+  };
+}
+```
 It&rsquo;s a simple flake that takes **nixos-unstable** repo as it&rsquo;s input and produces single package called **hello** that is the default output of the function. Here is the output if we run the flake:  
-
-     ~/temp   nix run .
-    warning: creating lock file '/home/moskas/temp/flake.lock'
-    Hello, world!
-
+```bash
+ ~/temp   nix run .
+warning: creating lock file '/home/moskas/temp/flake.lock'
+Hello, world!
+```
 As we can see it run the **hello** package after creating the **flake.lock** file that stores all the hashes and information about the inputs in order to reproduce it in the exact same way with exactly the same package version.  
 Here is the metadata for the flake as I&rsquo;m writing now:  
-
-     ~/temp   nix flake metadata
-    Resolved URL:  path:/home/moskas/temp
-    Locked URL:    path:/home/moskas/temp?lastModified=1708961028&narHash=sha256-F520/ukJCbgQkzMjje%2B/32/e9K3NYP12MBND9fCW9jw%3D
-    Description:   A very basic flake
-    Path:          /nix/store/vy96pawpm96bmsziv7bswmi6m0cbdf88-source
-    Last modified: 2024-02-26 16:23:48
-    Inputs:
-    └───nixpkgs: github:nixos/nixpkgs/73de017ef2d18a04ac4bfd0c02650007ccb31c2a
+```bash
+ ~/temp   nix flake metadata
+Resolved URL:  path:/home/moskas/temp
+Locked URL:    path:/home/moskas/temp?lastModified=1708961028&narHash=sha256-F520/ukJCbgQkzMjje%2B/32/e9K3NYP12MBND9fCW9jw%3D
+Description:   A very basic flake
+Path:          /nix/store/vy96pawpm96bmsziv7bswmi6m0cbdf88-source
+Last modified: 2024-02-26 16:23:48
+Inputs:
+└───nixpkgs: github:nixos/nixpkgs/73de017ef2d18a04ac4bfd0c02650007ccb31c2a
+```
 
 # Module system
 
@@ -66,21 +67,21 @@ I&rsquo;ll give some examples of what I mean by that.
 
 The most obvious one in my opinion. It provides module to write configuration for many applications such as zsh, newsboat, kitty, Firefox and many many more.  
 With simple nix syntax we can write a zsh config with syntax highlighting and completions, shell aliases, etc:  
-
-    programs.zsh = {
-      enable = true;
-      shellAliases = { e = "$EDITOR"; };
-      history = {
-        size = 10000;
-        path = "${config.xdg.dataHome}/zsh/history";
-      };
-      enableAutosuggestions = true;
-      syntaxHighlighting.enable = true;
-      autocd = false;
-      defaultKeymap = "emacs";
-      plugins = [ ];
-    }
-
+```nix
+programs.zsh = {
+  enable = true;
+  shellAliases = { e = "$EDITOR"; };
+  history = {
+    size = 10000;
+    path = "${config.xdg.dataHome}/zsh/history";
+  };
+  enableAutosuggestions = true;
+  syntaxHighlighting.enable = true;
+  autocd = false;
+  defaultKeymap = "emacs";
+  plugins = [ ];
+}
+```
 Just by looking at the code above we can infer what it will do and it&rsquo;s easy to use across multiple hosts.  
 I&rsquo;ve used home-manager heavily in my config and I can&rsquo;t see myself not using it in the future.  
 
@@ -94,102 +95,102 @@ Links:
 These modules solve exactly the same problem, they allow you to declare all of your secrets within nix code. You can use them for everything related to passwords, ssh keys and any other authorisation that is stored in plain text.  
 With that you can declare all of your secrets without worrying that they are stored in the plain text in your repo as they are encrypted using **sops** and **age** hence the names of the modules.  
 Of course they differ in the way they are declared and created, here is an example agenix declaration for adding ssh keys:  
+```nix
+let
+  user1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0idNvgGiucWgup/mP78zyC23uFjYq0evcWdjGQUaBH";
+  user2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI6jSq53F/3hEmSs+oq9L4TwOo1PrDMAgcA1uo1CCV/";
+  users = [ user1 user2 ];
 
-    let
-      user1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0idNvgGiucWgup/mP78zyC23uFjYq0evcWdjGQUaBH";
-      user2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI6jSq53F/3hEmSs+oq9L4TwOo1PrDMAgcA1uo1CCV/";
-      users = [ user1 user2 ];
-    
-      system1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPJDyIr/FSz1cJdcoW69R+NrWzwGK/+3gJpqD1t8L2zE";
-      system2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKzxQgondgEYcLpcPdJLrTdNgZ2gznOHCAxMdaceTUT1";
-      systems = [ system1 system2 ];
-    in
-    {
-      "secret1.age".publicKeys = [ user1 system1 ];
-      "secret2.age".publicKeys = users ++ systems;
-    }
-
+  system1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPJDyIr/FSz1cJdcoW69R+NrWzwGK/+3gJpqD1t8L2zE";
+  system2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKzxQgondgEYcLpcPdJLrTdNgZ2gznOHCAxMdaceTUT1";
+  systems = [ system1 system2 ];
+in
+{
+  "secret1.age".publicKeys = [ user1 system1 ];
+  "secret2.age".publicKeys = users ++ systems;
+}
+```
 In both solutions we are holders of the decryption keys and we can basically fearlesly share the nix code without worrying that somebody else will use it agains us and we&rsquo;ll store the decryption keys elswhere preferably offline for security reasons.  
 That also gives us a better way to manage and change the secrets on all of our machines if we ever need to.  
 
 ## disko
 
 It&rsquo;s a module that allows you to declaratively configure your disks during the install/reinstall. Basically it streamlines the process of creating partitions, mounting them and setting them up with parameters using nix language. It can get quite verbose in the config but once you have written it it&rsquo;s just one command to format all of your drive/s in one command. For instance here is my configuration for my homeserver:  
-
-    {
-      disko.devices = {
-        disk = {
-          vda = {
-            device = "/dev/sda";
-            type = "disk";
-            content = {
-              type = "gpt";
-              partitions = {
-                ESP = {
-                  type = "EF00";
-                  size = "500M";
-                  content = {
-                    type = "filesystem";
-                    format = "vfat";
-                    mountpoint = "/boot";
+```nix
+{
+  disko.devices = {
+    disk = {
+      vda = {
+        device = "/dev/sda";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            ESP = {
+              type = "EF00";
+              size = "500M";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+              };
+            };
+            root = {
+              size = "100%";
+              content = {
+                type = "btrfs";
+                extraArgs = [ "-f" ];
+                subvolumes = {
+                  "/rootfs" = { mountpoint = "/"; };
+                  "/home" = {
+                    mountOptions = [ "compress=zstd" ];
+                    mountpoint = "/home";
+                  };
+                  "/nix" = {
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                    mountpoint = "/nix";
+                  };
+                  "/swap" = {
+                    mountpoint = "/.swapvol";
+                    swap = { swapfile.size = "8G"; };
+                  };
+                  "/media" = {
+                    mountpoint = "/media";
+                    mountOptions = [ "compress=zstd" ];
                   };
                 };
-                root = {
-                  size = "100%";
-                  content = {
-                    type = "btrfs";
-                    extraArgs = [ "-f" ];
-                    subvolumes = {
-                      "/rootfs" = { mountpoint = "/"; };
-                      "/home" = {
-                        mountOptions = [ "compress=zstd" ];
-                        mountpoint = "/home";
-                      };
-                      "/nix" = {
-                        mountOptions = [ "compress=zstd" "noatime" ];
-                        mountpoint = "/nix";
-                      };
-                      "/swap" = {
-                        mountpoint = "/.swapvol";
-                        swap = { swapfile.size = "8G"; };
-                      };
-                      "/media" = {
-                        mountpoint = "/media";
-                        mountOptions = [ "compress=zstd" ];
-                      };
-                    };
-                    mountpoint = "/partition-root";
-                    swap = { swapfile = { size = "8G"; }; };
-                  };
-                };
+                mountpoint = "/partition-root";
+                swap = { swapfile = { size = "8G"; }; };
               };
             };
           };
         };
       };
-    }
-
+    };
+  };
+}
+```
 In that one file I&rsquo;ve configured my whole disk to run using btrfs with subvolumes and fat32 as boot.  
+```bash
+ ~   lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+sda      8:0    0 931,5G  0 disk
+├─sda1   8:1    0   500M  0 part /boot
+└─sda2   8:2    0   931G  0 part /home
+                                 /media
+                                 /.swapvol
+                                 /partition-root
+                                 /nix/store
+                                 /nix
+                                 /
 
-     ~   lsblk
-    NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
-    sda      8:0    0 931,5G  0 disk
-    ├─sda1   8:1    0   500M  0 part /boot
-    └─sda2   8:2    0   931G  0 part /home
-                                     /media
-                                     /.swapvol
-                                     /partition-root
-                                     /nix/store
-                                     /nix
-                                     /
-    
-     ~   sudo btrfs subvolume list /
-    ID 256 gen 2156 top level 5 path home
-    ID 257 gen 2151 top level 5 path media
-    ID 258 gen 2156 top level 5 path nix
-    ID 259 gen 2156 top level 5 path rootfs
-    ID 260 gen 18 top level 5 path swap
-
+ ~   sudo btrfs subvolume list /
+ID 256 gen 2156 top level 5 path home
+ID 257 gen 2151 top level 5 path media
+ID 258 gen 2156 top level 5 path nix
+ID 259 gen 2156 top level 5 path rootfs
+ID 260 gen 18 top level 5 path swap
+```
 It&rsquo;s only a small example of what it can do, when you combine the disko with impermanence it gets much better because you can declaratively rebuild your filesystem on each reboot.  
 
 ## nixvim
@@ -198,34 +199,35 @@ With nixvim we can configure our neovim using nix. We can configure basically al
 I&rsquo;ve written [my own configuration](https://github.com/Moskas/nixvim-config) using nixvim and I really enjoyed it. I always got thrown away with all of the possible package managers and configuration options in neovim but with nixvim it was a breeze.  
 Additionally with nixvim we can share our configurations without the need of installing them in **~/.config/neovim** so everyone can test it out without permanently installing it or overwriting own configuration.  
 Here is a small example of neovim configuration with nixvim that installs colorscheme, statusline(lualine) and lsp for Rust:  
-
-    programs.nixvim = {
+```nix
+programs.nixvim = {
+    enable = true;
+    colorschemes.gruvbox.enable = true;
+    plugins = {
+      lualine = {
         enable = true;
-        colorschemes.gruvbox.enable = true;
-        plugins = {
-          lualine = {
-            enable = true;
-            componentSeparators = {
-              left = "|";
-              right = "|";
-            };
-            sectionSeparators = {
-              left = "";
-              right = "";
-            };
-          };
-          lsp = {
-           enable = true;
-           servers = {
-             rust-analyzer = {
-                enable = true;
-                installRustc = true;
-                installCargo = true;
-             };
-           };
-          };
+        componentSeparators = {
+          left = "|";
+          right = "|";
         };
+        sectionSeparators = {
+          left = "";
+          right = "";
+        };
+      };
+      lsp = {
+       enable = true;
+       servers = {
+         rust-analyzer = {
+            enable = true;
+            installRustc = true;
+            installCargo = true;
+         };
+       };
+      };
     };
+};
+```
 
 ## nix-colors
 
