@@ -1,4 +1,6 @@
 import MarkdownIt from "markdown-it";
+import Anchor from "markdown-it-anchor";
+import TOC from "markdown-it-table-of-contents";
 import { getAllPosts, listTags } from "@/lib/posts";
 import { notFound } from "next/navigation";
 import hljs from "highlight.js";
@@ -13,9 +15,11 @@ const md = new MarkdownIt({
         console.error(err);
       }
     }
-    return ""; // return empty string if no language is specified
+    return "";
   },
-});
+})
+  .use(TOC)
+  .use(Anchor);
 
 export async function generateStaticParams() {
   const posts = getAllPosts();

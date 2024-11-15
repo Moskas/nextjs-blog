@@ -5,6 +5,8 @@ date: "12 Nov 2024 23:05:01"
 tags: ["Nix"]
 ---
 
+[[toc]]
+
 In the summer of 2023 I&rsquo;ve converted my main desktop to NixOS after using it for around half a year on my laptop. At the same time I have converted my configs to flakes and that change made me even more hooked with nix&rsquo;s ecosystem. 
 
 # Write once, use everywhere

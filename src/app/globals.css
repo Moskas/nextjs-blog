@@ -65,3 +65,22 @@ h1 {
     border-bottom: 2px solid;
   }
 }
+
+.table-of-contents {
+  border: 1px dashed;
+  padding: 2ch;
+  background-color: var(--background);
+
+  li::before {
+    content: "- ";
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.table-of-contents::before {
+  content: "Table of Contents";
+  border-bottom: 2px solid;
+}
