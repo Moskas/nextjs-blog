@@ -3,6 +3,7 @@ title: "The beauty of Nix"
 author: "Moskas"
 date: "12 Nov 2024 23:05:01"
 tags: ["Nix"]
+summary: "Praising nix"
 ---
 
 [[toc]]

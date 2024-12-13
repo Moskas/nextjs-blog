@@ -1,0 +1,39 @@
+#+title: Next.js blog
+#+options: toc:nil
+
+This repository contains the source code for a simple blog built with Next.js
+and using Nix flakes.
+
+** Installation
+
+To enter the development shell for this project, run the following command in the
+root directory of the repository:
+#+BEGIN_SRC bash
+nix develop
+#+END_SRC
+
+This will download and install all the necessary packages specified in the flake
+configuration.
+
+** Running the Project
+
+To start the development server, run the following command in the root directory
+of the repository:
+#+BEGIN_SRC bash
+nix develop --command npm run dev
+#+END_SRC
+
+This will build the project and start the Next.js development server. You can
+then access the blog by visiting <http://localhost:3000> in your web browser.
+
+** Building for Production
+
+To build the project for production, run the following command in the root
+directory of the repository:
+#+BEGIN_SRC bash
+nix develop --command npm run build
+#+END_SRC
+
+This will create a ~dist~ directory containing all the files needed to deploy
+the blog. You can then deploy these files to your preferred hosting platform.
+

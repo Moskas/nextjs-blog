@@ -1,12 +1,5 @@
 import { getAllPosts, listTags } from "@/lib/posts";
-
-export function summary(post: Post) {
-  if (post.summary) {
-    return <p>{post.summary}</p>;
-  } else {
-    return <p>No summary available</p>;
-  }
-}
+import { summary } from "@/lib/summary";
 
 export default function Home() {
   const posts = getAllPosts();
@@ -35,7 +28,7 @@ export default function Home() {
             <p className="text-sm text-align-right border-b-2">
               {post.date} | {listTags(post)}
             </p>
-            {summary(post)}
+            <p>{summary(post)}</p>
           </li>
         ))}
       </ul>

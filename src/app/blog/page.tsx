@@ -1,21 +1,12 @@
 import { getAllPosts, listTags } from "@/lib/posts";
-
-export function summary(post: Post) {
-  if (post.summary) {
-    return <p>{post.summary}</p>;
-  } else {
-    return <p>No summary available</p>;
-  }
-}
+import { summary } from "@/lib/summary";
 
 export default function HomePage() {
   const posts = getAllPosts();
 
   // Group posts by year
   const postsByYear: { [year: string]: typeof posts } = {};
-
   posts.forEach((post) => {
-    // Get the third element (year) from "day month year hour:minute:second" format
     const year = post.date.split(" ")[2];
     if (!postsByYear[year]) {
       postsByYear[year] = [];
@@ -49,7 +40,7 @@ export default function HomePage() {
                     {post.date} |{" "}
                     <span className="italic">{listTags(post)}</span>
                   </p>
-                  {summary(post)}
+                  <p>{summary(post)}</p>
                 </li>
               ))}
             </ul>
