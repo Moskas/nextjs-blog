@@ -22,6 +22,9 @@ export default function RootLayout({ children }) {
             <a href="/blog" className="hover:underline">
               Blog
             </a>
+            <a href="/travels" className="hover:underline">
+              Travels
+            </a>
             <a href="/resume" className="hover:underline">
               Resume
             </a>

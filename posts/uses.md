@@ -7,7 +7,7 @@ tags: ["Software", "Nix", "Hardware"]
 ---
 This is a short list of my hardware and software that I use on day to day basis.  
 
-
+[[toc]]
 
 # General Computing
 

@@ -80,6 +80,13 @@ h1 {
   }
 }
 
+.table-of-contents {
+  @media (min-width: 800px) {
+    float: right;
+    margin-left: 2ch;
+  }
+}
+
 .table-of-contents::before {
   content: "Table of Contents";
   border-bottom: 2px solid;
