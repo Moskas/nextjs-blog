@@ -4,13 +4,17 @@
 
 :root {
   --background: #ffffff;
+  --background-alt: #f0f0f0;
   --foreground: #171717;
+  --foreground-alt: #0f0f0f;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
+    --background-alt: #0f0f0f;
     --foreground: #ededed;
+    --foreground-alt: #a0a0a0;
   }
 }
 
@@ -90,4 +94,8 @@ h1 {
 .table-of-contents::before {
   content: "Table of Contents";
   border-bottom: 2px solid;
+}
+
+.logo img {
+  fill: var(--foreground) !important;
 }

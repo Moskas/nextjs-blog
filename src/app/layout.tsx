@@ -1,4 +1,6 @@
 import "./globals.css"; // Import global styles
+import Image from "next/image";
+import Logo from "@/logo.svg";
 
 export default function RootLayout({ children }) {
   return (
@@ -8,9 +10,9 @@ export default function RootLayout({ children }) {
         <title className="text-xl">My Blog</title>
       </head>
       <body className="flex flex-col min-h-screen p-2 sm:p-5 max-w-4xl mx-auto">
-        <header className="mx-2 sm:mx-5 flex justify-between items-center border-b-2 py-2">
+        <header className="mx-2 sm:mx-5 flex justify-between items-center border-b-2 py-2 px-5">
           <a href="../" className="hover:underline">
-            <div className="text-3xl font-bold">Moskas&apos; Blog</div>
+            <Logo className="logo" />
           </a>
           <div className="space-x-2 sm:space-x-4">
             <a href="../" className="hover:underline">
